@@ -39,7 +39,7 @@ class HTTPError(Exception):
     pass
 
 class OSM_API(object):
-    url = 'http://master.apis.dev.openstreetmap.org/'
+    url = 'https://master.apis.dev.openstreetmap.org/'
     def __init__(self, username = None, password = None):
         if username and password:
             self.username = username
@@ -90,7 +90,7 @@ class OSM_API(object):
     def _run_request(self, method, url, body = None, progress = 0, content_type = "text/xml"):
         url = urlparse.urljoin(self.url, url)
         purl = urlparse.urlparse(url)
-        if purl.scheme != "http":
+        if purl.scheme != "https":
             raise ValueError("Unsupported url scheme: %r" % (purl.scheme,))
         if ":" in purl.netloc:
             host, port = purl.netloc.split(":", 1)
@@ -112,7 +112,7 @@ class OSM_API(object):
 
         try:
             self.msg("connecting")
-            conn = httplib.HTTPConnection(host, port)
+            conn = httplib.HTTPSConnection(host, port)
 #            conn.set_debuglevel(10)
 
             if try_no_auth:
@@ -125,7 +125,7 @@ class OSM_API(object):
                 if try_no_auth:
                     conn.close()
                     self.msg("re-connecting")
-                    conn = httplib.HTTPConnection(host, port)
+                    conn = httplib.HTTPSConnection(host, port)
 #                    conn.set_debuglevel(10)
 
                 creds = self.username + ":" + self.password
@@ -160,7 +160,7 @@ class OSM_API(object):
         ElementTree.SubElement(element, "tag", {"k": "created_by", "v": created_by})
         ElementTree.SubElement(element, "tag", {"k": "comment", "v": comment})
         ElementTree.SubElement(element, "tag", {"k": "import", "v": "yes"})
-        ElementTree.SubElement(element, "tag", {"k": "source", "v": "PSMA_Admin"})
+        ElementTree.SubElement(element, "tag", {"k": "source", "v": "PSMA Administrative Boundaries"})
 #       ElementTree.SubElement(element, "tag", {"k": "merged", "v": "no - possible duplicates (will be resolved in following changesets)"})
 #       ElementTree.SubElement(element, "tag", {"k": "reviewed", "v": "yes"})
 #       ElementTree.SubElement(element, "tag", {"k": "revert", "v": "yes"})
