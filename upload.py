@@ -39,7 +39,7 @@ class HTTPError(Exception):
     pass
 
 class OSM_API(object):
-    url = 'http://api.openstreetmap.org/'
+    url = 'http://master.apis.dev.openstreetmap.org/'
     def __init__(self, username = None, password = None):
         if username and password:
             self.username = username
@@ -159,12 +159,12 @@ class OSM_API(object):
         element = ElementTree.SubElement(root, "changeset")
         ElementTree.SubElement(element, "tag", {"k": "created_by", "v": created_by})
         ElementTree.SubElement(element, "tag", {"k": "comment", "v": comment})
-#       ElementTree.SubElement(element, "tag", {"k": "import", "v": "yes"})
-#       ElementTree.SubElement(element, "tag", {"k": "source", "v": "BDLL25, EGRN, Instituto Geográfico Nacional"})
+        ElementTree.SubElement(element, "tag", {"k": "import", "v": "yes"})
+        ElementTree.SubElement(element, "tag", {"k": "source", "v": "PSMA_Admin"})
 #       ElementTree.SubElement(element, "tag", {"k": "merged", "v": "no - possible duplicates (will be resolved in following changesets)"})
 #       ElementTree.SubElement(element, "tag", {"k": "reviewed", "v": "yes"})
 #       ElementTree.SubElement(element, "tag", {"k": "revert", "v": "yes"})
-#       ElementTree.SubElement(element, "tag", {"k": "bot", "v": "yes"})
+        ElementTree.SubElement(element, "tag", {"k": "bot", "v": "yes"})
 #       ElementTree.SubElement(element, "tag", {"k": "url", "v": "http://www.openstreetmap.org/user/nmixter/diary/8218"})
         body = ElementTree.tostring(root, "utf-8")
         reply = self._run_request("PUT", "/api/0.6/changeset/create", body)
